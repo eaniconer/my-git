@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.CommandLineUtils;
 
 namespace my_git
 {
@@ -6,7 +7,11 @@ namespace my_git
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("my-git is not implemented yet");
+            var app = new CommandLineApplication();
+            app.Name = "my-git";
+            app.Description = "Distributed Version Control System.";
+            app.HelpOption("-h|--help");
+            app.Execute(args);
         }
     }
 }
