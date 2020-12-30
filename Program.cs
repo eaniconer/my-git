@@ -1,18 +1,41 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Microsoft.Extensions.CommandLineUtils;
-
-namespace my_git
+﻿namespace MyGit
 {
-    class Program
+    using System.IO;
+    using Microsoft.Extensions.CommandLineUtils;
+
+    /// <summary>
+    /// Entry point class.
+    /// </summary>
+    internal class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Entry point method.
+        /// </summary>
+        /// <param name="args"> Command line parameters. </param>
+        internal static void Main(string[] args)
         {
+            var vcs = new VersionControlSystem(Directory.GetCurrentDirectory());
+            var command = ParseCommand(args);
+
+            if (command != null)
+            {
+                command.Execute(vcs);
+            }
+        }
+
+        /// <summary>
+        /// Parses arguments to extract <see cref="IVcsCommand"/>.
+        /// </summary>
+        /// <param name="args"> Argumetns. </param>
+        /// <returns> <see cref="IVcsCommand"/>. </returns>
+        internal static IVcsCommand ParseCommand(string[] args)
+        {
+            IVcsCommand parsedCommand = null;
+
             var app = new CommandLineApplication
             {
                 Name = "my-git",
-                Description = "Distributed Version Control System."
+                Description = "Distributed Version Control System.",
             };
 
             app.HelpOption("-h|--help");
@@ -22,55 +45,14 @@ namespace my_git
                 command.Description = "Creates an empty repository.";
                 command.OnExecute(() =>
                 {
-                    InitRepository();
+                    parsedCommand = new InitCommand();
                     return 0;
                 });
             });
 
             app.Execute(args);
-        }
 
-        /// <summary>
-        /// Create an empty repository or reinitialize an existing one.
-        /// </summary>
-        private static void InitRepository()
-        {
-            var vcsRootPath = VcsRootDirectoryPath;
-            if (Directory.Exists(vcsRootPath))
-            {
-                Console.WriteLine("Reinitialize existing repository...");
-            }
-            else
-            {
-                Console.WriteLine("Initialize an empty repository...");
-
-                try
-                {
-                    Directory.CreateDirectory(vcsRootPath);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Failed to initialize repository. Error message: {e.Message}");
-                } 
-            }
-        }
-
-        /// <summary>
-        /// Name of directory that contains all information for version constrol system.
-        /// </summary>
-        private static string VcsRootDirectoryName
-        {
-            get { return ".mygit"; }
-        }
-
-        /// <summary>
-        /// Path to directory that contains all information for version control system.
-        /// </summary>
-        private static string VcsRootDirectoryPath
-        {
-            get { return Path.Combine(
-                Directory.GetCurrentDirectory(), VcsRootDirectoryName);
-            }
+            return parsedCommand;
         }
     }
 }
