@@ -1,5 +1,8 @@
-﻿namespace MyGit
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("tests")]
+
+namespace MyGit
 {
+    using System;
     using System.IO;
     using Microsoft.Extensions.CommandLineUtils;
 
@@ -14,6 +17,11 @@
         /// <param name="args"> Command line parameters. </param>
         internal static void Main(string[] args)
         {
+            foreach (string arg in args)
+            {
+                Console.WriteLine(arg);
+            }
+
             var vcs = new VersionControlSystem(Directory.GetCurrentDirectory());
             var command = ParseCommand(args);
 
