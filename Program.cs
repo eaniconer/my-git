@@ -17,11 +17,6 @@ namespace MyGit
         /// <param name="args"> Command line parameters. </param>
         internal static void Main(string[] args)
         {
-            foreach (string arg in args)
-            {
-                Console.WriteLine(arg);
-            }
-
             var vcs = new VersionControlSystem(Directory.GetCurrentDirectory());
             var command = ParseCommand(args);
 
