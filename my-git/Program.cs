@@ -2,7 +2,6 @@
 
 namespace MyGit
 {
-    using System;
     using System.IO;
     using Microsoft.Extensions.CommandLineUtils;
 
@@ -49,6 +48,16 @@ namespace MyGit
                 command.OnExecute(() =>
                 {
                     parsedCommand = new InitCommand();
+                    return 0;
+                });
+            });
+
+            app.Command("branch", command =>
+            {
+                command.Description = "List all local branches.";
+                command.OnExecute(() =>
+                {
+                    parsedCommand = new BranchCommand();
                     return 0;
                 });
             });

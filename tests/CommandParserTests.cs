@@ -3,7 +3,7 @@ using MyGit;
 
 namespace tests
 {
-    public class Tests
+    public class CommandParserTests
     {
         [SetUp]
         public void Setup()
@@ -30,6 +30,22 @@ namespace tests
             var command = Program.ParseCommand(new string[1] { "init" });
             Assert.IsNotNull(command);
             Assert.IsTrue(command is InitCommand);
+        }
+
+        [Test]
+        public void Test3()
+        {
+            var command = Program.ParseCommand(new string[1] { "branch" });
+            Assert.IsNotNull(command);
+            Assert.IsTrue(command is BranchCommand);
+        }
+
+        [Test]
+        public void Test4()
+        {
+            var command = Program.ParseCommand(new string[1] { "branch feature" });
+            Assert.IsNotNull(command);
+            Assert.IsTrue(command is BranchCommand);
         }
     }
 }

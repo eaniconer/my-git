@@ -1,6 +1,9 @@
-﻿namespace MyGit
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("tests")]
+
+namespace MyGit
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
@@ -22,7 +25,7 @@
         /// <summary>
         /// Gets name of directory that contains all information for version constrol system.
         /// </summary>
-        private static string VcsRootDirectoryName
+        internal static string VcsRootDirectoryName
         {
             get { return ".mygit"; }
         }
@@ -48,6 +51,12 @@
                     Console.WriteLine($"Failed to initialize repository. Error message: {e.Message}");
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<Branch> Branches()
+        {
+            return new Branch[1] { new Branch("master") };
         }
     }
 }
